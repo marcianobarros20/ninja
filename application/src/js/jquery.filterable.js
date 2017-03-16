@@ -1,39 +1,74 @@
+var settings = {
+
+	"limit": 1000,
+	"selector": "select[data-filterable]",
+	"host": window.location.protocol + "//" + window.location.host,
+
+	"datasource": function ( select ) {
+
+		var type = select.attr( 'data-type' ),
+		root = settings.host + _site_domain + _index_page;
+
+		return root + '/listview/fetch_ajax?query=[' + type + 's] all&columns[]=key&limit=1000000';
+
+	},
+
+	"collector": function ( select, data ) {
+
+		var names = [];
+		for ( var i = 0; i < data.data.length; i++ ) {
+			names.push( data.data[ i ].key );
+		}
+		select.filterable( names );
+
+	},
+
+	"ajax": {
+		dataType: 'json',
+		error: function( xhr ) {
+			console.log( xhr.responseText );
+		}
+	}
+
+};
+
+function selectload ( index, element ) {
+
+	var select = $( element );
+
+	if ( select.attr( 'data-type' ) ) {
+
+		settings.ajax.success = function ( data ) {
+			settings.collector( select, data );
+		};
+
+		settings.ajax.url = settings.datasource( select );
+		$.ajax( settings.ajax );
+
+	} else if (select.length) {
+
+		var options = $.map( select.children(), function( option ) {
+			return option.text;
+		});
+
+		select.children().each( function() {
+			if (!$(this).attr('selected')) {
+				select.find('option[value="' + this.text + '"]').remove();
+			}
+		} );
+
+		select.filterable( options );
+
+	}
+
+}
+
+function filterable_init() {
+	var selects = $(settings.selector );
+	selects.each(selectload);
+}
 
 ( function ( jQuery, global ) {
-
-	var settings = {
-
-		"limit": 1000,
-		"selector": "select[data-filterable]",
-		"host": window.location.protocol + "//" + window.location.host,
-
-		"datasource": function ( select ) {
-
-			var type = select.attr( 'data-type' ),
-				root = settings.host + _site_domain + _index_page;
-
-			return root + '/listview/fetch_ajax?query=[' + type + 's] all&columns[]=key&limit=1000000';
-
-		},
-
-		"collector": function ( select, data ) {
-
-			var names = [];
-			for ( var i = 0; i < data.data.length; i++ ) {
-				names.push( data.data[ i ].key );
-			}
-			select.filterable( names );
-
-		},
-
-		"ajax": {
-			dataType: 'json',
-			error: function( xhr ) {
-				console.log( xhr.responseText );
-			}
-		}
-
-	};
 
 	var getBoxing = function ( filtered, multi ) {
 
@@ -45,7 +80,7 @@
 						$( '<input type="button" value="➤" class="jq-filterable-move" title="Use objects matching search">' )
 					),
 					filtered.clone()
-						.addClass( "jq-filterable-list" ),
+					.addClass( "jq-filterable-list" ),
 					"<br>",
 					$( '<div class="jq-filterable-stats">' )
 				),$( '<div class="jq-filterable-right">' ).append(
@@ -59,7 +94,7 @@
 				$( '<div class="jq-filterable-left">' ).append(
 					$( '<input type="text" class="jq-filterable-filter" placeholder="Search...">' ),
 					filtered.clone()
-						.addClass( "jq-filterable-list" ),
+					.addClass( "jq-filterable-list" ),
 					"<br>",
 					$( '<div class="jq-filterable-stats jq-filterable-largest">' )
 				)
@@ -94,17 +129,17 @@
 			data.unshift('');
 		}
 
-		this.results =			new Set();
-		this.memory =				new Set();
-		this.data =					new Set( data );
+		this.results = new Set();
+		this.memory = new Set();
+		this.data = new Set( data );
 
-		this.filter =				this.box.find( ".jq-filterable-filter" );
-		this.filtered =			this.box.find( ".jq-filterable-list" );
+		this.filter = this.box.find( ".jq-filterable-filter" );
+		this.filtered = this.box.find( ".jq-filterable-list" );
 
-		this.statusbar =		this.box.find( '.jq-filterable-stats' );
-		this.selected =			this.box.find( '.jq-filterable-results' );
-		this.resultstats =	this.box.find( '.jq-filterable-result-stats' );
-		this.mover =				this.box.find( '.jq-filterable-move' );
+		this.statusbar = this.box.find( '.jq-filterable-stats' );
+		this.selected =	this.box.find( '.jq-filterable-results' );
+		this.resultstats = this.box.find( '.jq-filterable-result-stats' );
+		this.mover = this.box.find( '.jq-filterable-move' );
 
 		this.form = filtered.closest("form");
 		this.form.on( "submit", function ( e ) {
@@ -178,7 +213,7 @@
 			this.box.on( "change", ".jq-filterable-list, .jq-filterable-results", function ( e ) {
 
 				var parent = $( e.target ),
-					values = null;
+				values = null;
 
 				if ( parent.is( "option" ) ) {
 					parent = parent.closest( 'select' );
@@ -209,16 +244,16 @@
 	Filterable.prototype.batcher = function batcher ( set ) {
 
 		var iterator = new SetIterator( set ),
-			self = this;
+		self = this;
 
 		this.selected.empty();
 
 		return function () {
 
 			var fragment = document.createDocumentFragment(),
-				counter = 0,
-				index = null,
-				opt = null;
+			counter = 0,
+			index = null,
+			opt = null;
 
 			while ( index = iterator.next() ) {
 
@@ -256,22 +291,22 @@
 
 		var batch = this.batcher( this.memory ),
 			completed = batch(),
-			interval = setInterval( function () {
+		interval = setInterval( function () {
 
-				completed = batch();
-				if ( completed ) {
+			completed = batch();
+			if ( completed ) {
 
-					clearInterval( interval );
+				clearInterval( interval );
 
-					self.filtered.attr( 'disabled', false );
-					self.form.find( 'input[type="submit"]' )
-						.attr( 'disabled', false );
+				self.filtered.attr( 'disabled', false );
+				self.form.find( 'input[type="submit"]' )
+					.attr( 'disabled', false );
 
-					self.box.removeClass( 'jq-filterable-working' );
-					self.search( self.filter.val() );
+				self.box.removeClass( 'jq-filterable-working' );
+				self.search( self.filter.val() );
 
-				}
-			}, 10 );
+			}
+		}, 10 );
 
 	};
 
@@ -283,7 +318,7 @@
 		while ( index = iterator.next() ) {
 			i = this.memory.find( index );
 			if ( i >= 0 ) this.memory.remove( i );
-			this.selected.find( 'option[value="' + index + '"]' ).remove();
+				this.selected.find( 'option[value="' + index + '"]' ).remove();
 		}
 
 		this.search( this.filter.val() );
@@ -338,14 +373,14 @@
 	};
 
 	/** method search ( string term )
-	  *
-	  * Searches the data array for regexp matches
-	  * against term, then runs method populate.
-	  *
-	  * @param string term
-	  * @param boolean respond
-	  * @return void
-	  */
+	*
+	* Searches the data array for regexp matches
+	* against term, then runs method populate.
+	*
+	* @param string term
+	* @param boolean respond
+	* @return void
+	*/
 	Filterable.prototype.search = function search ( term, source, respond ) {
 
 		var memresult = [];
@@ -359,11 +394,11 @@
 		}
 
 		var iterator = new SetIterator( this.data ),
-			index = null;
+		index = null;
 
 		while ( ( index = iterator.next() ) != null ) {
 			if ( index.match( term ) )
-				this.results.push( index );
+			this.results.push( index );
 		}
 
 		this.memory.reset();
@@ -383,13 +418,13 @@
 	};
 
 	/** method populate ( string array data )
-	  *
-	  * Searches the data array for regexp matches
-	  * against term, then runs method populate.
-	  *
-	  * @param string term
-	  * @return void
-	  */
+	*
+	* Searches the data array for regexp matches
+	* against term, then runs method populate.
+	*
+	* @param string term
+	* @return void
+	*/
 	Filterable.prototype.populate = function populate ( source ) {
 
 		var fragment = document.createDocumentFragment(),
@@ -485,8 +520,7 @@
 	}
 
 	$( document ).ready( function () {
-		var selects = $( settings.selector );
-		selects.each( selectload );
+		filterable_init();
 	} );
 
 } ) ( jQuery, window );

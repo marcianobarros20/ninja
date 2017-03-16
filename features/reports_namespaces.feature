@@ -21,7 +21,7 @@ Feature: Report namespace are respected
 			|:read.report.histogram.html|Hey, Einstein! I'm on your side!|Histogram   |
 			|:read.report.summary.html  |Do a barrel roll!               |Summary     |
 
-	@unreliable_el7
+	@unreliable_el7 @unreliable
 	Scenario: PDF Availability reports are restricted
 		Given these actions are denied
 			|action                | message                       |
@@ -39,7 +39,7 @@ Feature: Report namespace are respected
 		When I click "As PDF"
 		Then I should see "Hold still and lemme shoot you."
 
-	@unreliable_el7
+	@unreliable_el7 @unreliable
 	Scenario: PDF SLA reports are restricted
 		Given these actions are denied
 			|action                  |message                               |
