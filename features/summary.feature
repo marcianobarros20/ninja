@@ -104,7 +104,7 @@ Feature: Summary reports
 		Then I should see "No objects could be found in your selected groups to base the report on"
 		And I should see "Report Mode"
 
-	@configuration @reports
+	@configuration @reports @unreliable
 	Scenario: Generate report for host should by default include service alerts
 		Given I am on the Host details page
 		And I hover over the "Report" menu
@@ -153,7 +153,7 @@ Feature: Summary reports
 		And I shouldn't see "win-server2"
 		And I shouldn't see "System Load"
 
-	@configuration @reports
+	@configuration @reports @unreliable
 	Scenario: Generate multi host report
 		Given I am on the Host details page
 		And I hover over the "Report" menu
@@ -201,7 +201,7 @@ Feature: Summary reports
 		And I shouldn't see "linux-server2"
 		And I shouldn't see "win-server2"
 
-	@configuration @reports
+	@configuration @reports @unreliable
 	Scenario: Generate single service report should by default include host alerts
 		Given I am on the Host details page
 		And I hover over the "Report" menu
@@ -250,7 +250,7 @@ Feature: Summary reports
 		And I shouldn't see "win-server2"
 		And I shouldn't see "System Load"
 
-	@configuration @reports
+	@configuration @reports @unreliable
 	Scenario: Generate multi service on same host report
 		Given I am on the Host details page
 		And I hover over the "Report" menu
@@ -305,7 +305,7 @@ Feature: Summary reports
 		And I shouldn't see "win-server2"
 		And I shouldn't see "System Load"
 
-	@configuration @reports
+	@configuration @reports @unreliable
 	Scenario: Generate multi service on different host report
 		Given I am on the Host details page
 		And I hover over the "Report" menu
@@ -362,7 +362,7 @@ Feature: Summary reports
 		And I shouldn't see "win-server2"
 		And I shouldn't see "Swap Usage"
 
-	@configuration @reports
+	@configuration @reports @unreliable
 	Scenario: Generate single hostgroup report
 		Given I am on the Host details page
 		And I hover over the "Report" menu
@@ -406,7 +406,7 @@ Feature: Summary reports
 		And I shouldn't see "PING"
 		And I shouldn't see "Swap Usage"
 
-	@configuration @reports
+	@configuration @reports @unreliable
 	Scenario: Generate multi hostgroup report
 		Given I am on the Host details page
 		And I hover over the "Report" menu
@@ -457,7 +457,7 @@ Feature: Summary reports
 		# The number of host alerts
 		And I should see "1"
 
-	@configuration @reports
+	@configuration @reports @unreliable
 	Scenario: Generate hostgroup report with overlapping members
 		Given I am on the Host details page
 		And I hover over the "Report" menu
@@ -507,7 +507,7 @@ Feature: Summary reports
 		# The number of host alerts
 		And I should see "1"
 
-	@configuration @reports
+	@configuration @reports @unreliable
 	Scenario: Generate single servicegroup report
 		Given I am on the Host details page
 		And I hover over the "Report" menu
@@ -555,7 +555,7 @@ Feature: Summary reports
 		And I shouldn't see "linux-server2"
 		And I shouldn't see "System Load"
 
-	@configuration @reports
+	@configuration @reports @unreliable
 	Scenario: Generate multi servicegroup report
 		Given I am on the Host details page
 		And I hover over the "Report" menu
@@ -605,7 +605,7 @@ Feature: Summary reports
 		And I shouldn't see "linux-server2"
 		And I shouldn't see "System Load"
 
-	@configuration @reports
+	@configuration @reports @unreliable
 	Scenario: Generate report on custom report date
 		Given I am on the Host details page
 		And I hover over the "Report" menu

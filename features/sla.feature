@@ -64,7 +64,7 @@ Feature: SLA reports
 		And I should see "Report Settings"
 		And "Jan" should contain "9"
 
-	@configuration @reports
+	@configuration @reports @unreliable
 	Scenario: Generate report on empty servicegroup
 		Given I am on the Host details page
 		And I hover over the "Report" menu
@@ -91,7 +91,7 @@ Feature: SLA reports
 		Then I should see "Please enter at least one SLA value"
 		And I should see "Report Settings"
 
-	@configuration @reports
+	@configuration @reports @unreliable
 	Scenario: Generate single host report
 		Given I am on the Host details page
 		And I hover over the "Report" menu
@@ -110,7 +110,7 @@ Feature: SLA reports
 		Then I should see "Host details"
 		And I should see "linux-server1"
 
-	@configuration @reports
+	@configuration @reports @unreliable
 	Scenario: Generate multi host report
 		Given I am on the Host details page
 		And I hover over the "Report" menu
@@ -136,7 +136,7 @@ Feature: SLA reports
 		And I should see "linux-server1"
 		And I should see "win-server1"
 
-	@configuration @reports
+	@configuration @reports @unreliable
 	Scenario: Generate single service report
 		Given I am on the Host details page
 		And I hover over the "Report" menu
@@ -155,7 +155,7 @@ Feature: SLA reports
 		When I click "Show availability breakdown"
 		Then I should see "Service details for PING on host linux-server1"
 
-	@configuration @reports
+	@configuration @reports @unreliable
 	Scenario: Generate multi service on same host report
 		Given I am on the Host details page
 		And I hover over the "Report" menu
@@ -182,7 +182,7 @@ Feature: SLA reports
 		And I should see "PING"
 		And I should see "System Load"
 
-	@configuration @reports
+	@configuration @reports @unreliable
 	Scenario: Generate multi service on different host report
 		Given I am on the Host details page
 		And I hover over the "Report" menu
@@ -288,7 +288,7 @@ Feature: SLA reports
 		And I should see "linux-server1"
 		And I should see "linux-server2"
 
-	@configuration @reports
+	@configuration @reports @unreliable
 	Scenario: Generate single servicegroup report
 		Given I am on the Host details page
 		And I hover over the "Report" menu
@@ -315,7 +315,7 @@ Feature: SLA reports
 		And I should see "Services on host: win-server2"
 		And I should see "PING"
 
-	@configuration @reports
+	@configuration @reports @unreliable
 	Scenario: Generate multi servicegroup report
 		Given I am on the Host details page
 		And I hover over the "Report" menu

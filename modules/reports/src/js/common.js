@@ -1,17 +1,12 @@
 var sla_month_error_color    = 'red';
 var sla_month_disabled_color = '#cdcdcd';
 var sla_month_enabled_color  = '#fafafa';
+var edit_settings_url;
 $(document).ready(function() {
-	$(".fancybox").fancybox({
-		'overlayOpacity'        :       0.7,
-		'overlayColor'          :       '#ffffff',
-		'hideOnContentClick' : false,
-		'autoScale':true,
-		'autoDimensions': true,
-		'onComplete': function(obj) { $($(obj).attr('href')).find('.filter-status').each(filter_mapping_mapping); }
-	});
 
 	$('.filter-status').on('change', filter_mapping_mapping).each(filter_mapping_mapping);
+
+	edit_settings_url = $('.edit_settings').attr('href');
 
 	var direct_link_visible = false;
 	$('#current_report_params').click(function() {
