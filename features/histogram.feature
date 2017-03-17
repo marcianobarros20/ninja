@@ -1,24 +1,24 @@
 @unreliable_el7
 Feature: Histogram reports
 	Background:
-		Given I have these hostgroups configured:
-			| hostgroup_name |
+		Given I have these mocked hostgroups
+			| name           |
 			| LinuxServers   |
 			| WindowsServers |
 			| MixedGroup     |
 			| EmptyGroup     |
-		And I have these hosts:
-			| host_name      | host_groups               |
+		And I have these mocked hosts
+			| name           | groups                    |
 			| linux-server1  | LinuxServers,MixedGroup   |
 			| linux-server2  | LinuxServers              |
 			| win-server1    | WindowsServers            |
 			| win-server2    | WindowsServers,MixedGroup |
-		And I have these servicegroups:
-			| servicegroup_name | alias                           |
+		And I have these mocked servicegroups
+			| name              | alias                           |
 			| pings             | ping services plus one non-ping |
 			| empty             | nothing in here                 |
-		And I have these services:
-			| service_description | host_name     | check_command   | notifications_enabled | active_checks_enabled | service_groups |
+		And I have these mocked services
+			| description         | host          | check_command   | notifications_enabled | active_checks_enabled | groups         |
 			| System Load         | linux-server1 | check_nrpe!load | 1                     | 1                     |                |
 			| PING                | linux-server1 | check_ping      | 1                     | 0                     | pings          |
 			| System Load         | linux-server2 | check_nrpe!load | 1                     | 1                     |                |
@@ -26,7 +26,7 @@ Feature: Histogram reports
 			| Swap Usage          | win-server1   | check_swap      | 1                     | 0                     | pings          |
 			| PING                | win-server2   | check_ping      | 0                     | 1                     | pings          |
 		And I have these report data entries:
-			| timestamp           | event_type | flags | attrib | host_name     | service_description | state | hard | retry | downtime_depth | output |
+			| timestamp           | event_type | flags | attrib | host_name     | service_description | state | hard | retry | downtime_depth | output              |
 			| 2013-01-01 12:00:00 |        100 |  NULL |   NULL |               |                     |     0 |    0 |     0 |           NULL | NULL                |
 			| 2013-01-01 12:00:01 |        801 |  NULL |   NULL | win-server1   |                     |     0 |    1 |     1 |           NULL | OK - laa-laa        |
 			| 2013-01-01 12:00:02 |        801 |  NULL |   NULL | linux-server1 |                     |     0 |    1 |     1 |           NULL | OK - Sven Melander  |
@@ -59,20 +59,20 @@ Feature: Histogram reports
 		Then I should see "The groups you selected (EmptyGroup) had no members, so cannot create a report from them"
 		And I should see "Report Settings"
 
-	@configuration @reports @unreliable
+	@configuration @reports
 	Scenario: Generate report on empty servicegroup
 		Given I am on the Host details page
 		And I hover over the "Report" menu
 		And I hover over the "Histogram" menu
 		When I click "Create Histogram Report"
 		And I select "Servicegroups" from "Report type"
-		And I select "empty" from the multiselect "objects_tmp"
+		When I select "empty" from the multiselect "objects_tmp"
 		Then "objects" should have option "empty"
 		When I click "Show report"
 		Then I should see "The groups you selected (empty) had no members, so cannot create a report from them"
 		And I should see "Report Settings"
 
-	@configuration @reports @unreliable
+	@configuration @reports
 	Scenario: Generate single host report
 		Given I am on the Host details page
 		And I hover over the "Report" menu
@@ -90,7 +90,7 @@ Feature: Histogram reports
 		And I should see "linux-server1"
 		And I shouldn't see "win-server1"
 
-	@configuration @reports @unreliable
+	@configuration @reports
 	Scenario: Generate multi host report
 		Given I am on the Host details page
 		And I hover over the "Report" menu
@@ -108,7 +108,7 @@ Feature: Histogram reports
 		And I should see "linux-server1"
 		And I should see "win-server1"
 
-	@configuration @reports @unreliable
+	@configuration @reports
 	Scenario: Generate single service report
 		Given I am on the Host details page
 		And I hover over the "Report" menu
@@ -123,7 +123,7 @@ Feature: Histogram reports
 		And I should see "linux-server1;PING"
 		And I shouldn't see "win-server1"
 
-	@configuration @reports @unreliable
+	@configuration @reports
 	Scenario: Generate multi service on same host report
 		Given I am on the Host details page
 		And I hover over the "Report" menu
@@ -144,7 +144,7 @@ Feature: Histogram reports
 		And I shouldn't see "linux-server2"
 		And I shouldn't see "win-server1"
 
-	@configuration @reports @unreliable
+	@configuration @reports
 	Scenario: Generate multi service on different host report
 		Given I am on the Host details page
 		And I hover over the "Report" menu
@@ -209,7 +209,7 @@ Feature: Histogram reports
 		And I should see "linux-server2"
 		And I shouldn't see "win-server1"
 
-	@configuration @reports @unreliable
+	@configuration @reports
 	Scenario: Generate single servicegroup report
 		Given I am on the Host details page
 		And I hover over the "Report" menu
@@ -223,7 +223,7 @@ Feature: Histogram reports
 		And I should see "Included services"
 		And I should see "linux-server1;PING"
 
-	@configuration @reports @unreliable
+	@configuration @reports
 	Scenario: Generate multi servicegroup report
 		Given I am on the Host details page
 		And I hover over the "Report" menu
@@ -300,10 +300,10 @@ Feature: Histogram reports
 		And I click "Save report" inside "#save_report_form"
 		Then I should see "Report was successfully saved"
 
-	@configuration @reports @unreliable
+	@configuration @reports
 	Scenario: View saved report
 		Given I am on the Host details page
-		When I hover over the "Report" button
+		When I hover over the "Report" menu
 		And I click "Histogram"
 		Then I should see "Saved reports"
 		And "Saved reports" should have option "saved test report"

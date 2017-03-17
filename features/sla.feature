@@ -288,7 +288,7 @@ Feature: SLA reports
 		And I should see "linux-server1"
 		And I should see "linux-server2"
 
-	@configuration @reports @unreliable
+	@configuration @reports
 	Scenario: Generate single servicegroup report
 		Given I am on the Host details page
 		And I hover over the "Report" menu
@@ -315,7 +315,7 @@ Feature: SLA reports
 		And I should see "Services on host: win-server2"
 		And I should see "PING"
 
-	@configuration @reports @unreliable
+	@configuration @reports
 	Scenario: Generate multi servicegroup report
 		Given I am on the Host details page
 		And I hover over the "Report" menu
@@ -446,7 +446,6 @@ Feature: SLA reports
 		And "Average" should be selected from "SLA calculation method"
 		And "Uptime, with difference" should be selected from "Count scheduled downtime as"
 		And "Undetermined" should be selected from "Count program downtime as"
-		And "Include soft states" should be checked
 		And "Use alias" should be checked
 		And "pink_n_fluffy" should be selected from "Skin"
 		And "Description" should contain "This is a saved test report"
@@ -477,20 +476,16 @@ Feature: SLA reports
 		When I select "saved test report" from "Saved reports"
 		Then "objects" should have option "LinuxServers"
 		And "objects_tmp" should have option "WindowsServers"
-		And "Include soft states" should be checked
 		And "Use alias" should be checked
 		When I deselect "LinuxServers" from the multiselect "objects"
 		And I select "WindowsServers" from the multiselect "objects_tmp"
-		When I uncheck "Include soft states"
 		And I click "Show report"
 		And I click "Edit settings"
-		Then "Include soft states" should be unchecked
-		And "Use alias" should be checked
+		Then "Use alias" should be checked
 		When I uncheck "Use alias"
 		And I click "Show report"
 		And I click "Edit settings"
-		Then "Include soft states" should be unchecked
-		And "Use alias" should be unchecked
+		Then "Use alias" should be unchecked
 		When I click "Show report"
 		And I click "Save report"
 		And I click "Save report" inside "#save_report_form"
@@ -501,7 +496,6 @@ Feature: SLA reports
 		Then I should see "Saved reports"
 		And "Saved reports" should have option "saved test report"
 		When I select "saved test report" from "Saved reports"
-		And "Include soft states" should be unchecked
 		And "Use alias" should be unchecked
 
 	@configuration @reports @unreliable

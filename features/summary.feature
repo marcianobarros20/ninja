@@ -90,7 +90,7 @@ Feature: Summary reports
 		Then I should see "No objects could be found in your selected groups to base the report on"
 		And I should see "Report Mode"
 
-	@configuration @reports
+	@configuration @reports @unreliable
 	Scenario: Generate report on empty servicegroup
 		Given I am on the Host details page
 		And I hover over the "Report" menu

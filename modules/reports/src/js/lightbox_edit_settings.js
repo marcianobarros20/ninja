@@ -3,6 +3,7 @@ $(document).on('click', '.edit_settings', function (e) {
 	var lightbox = LightboxManager.ajax_form_from_href($(this).text(), href);
 	e.preventDefault();
 	$( ".lightbox-content" ).css({"overflow":"scroll", "display": "block"});
+
 	return false;
 });
 
@@ -10,7 +11,8 @@ $( document ).ajaxComplete(function( event, xhr, settings ) {
 	if ( settings.url === edit_settings_url ) {
 		setTimeout(function() {
 			filterable_init();
-			$('.lightbox-content').find('.filter-status').each(lightbox_filter_mapping_mapping);
+            $('.lightbox-content #header').remove();
+            $('.lightbox-content').find('.filter-status').each(lightbox_filter_mapping_mapping);
 			$('#report_type').trigger('change');
 			$('#report_period').trigger('change');
 			$('#show_all').trigger('change');

@@ -35,20 +35,22 @@ Feature: Alert history reports
 			| 2013-01-01 12:00:02 |        801 |  NULL |   NULL | linux-server2 |                     |     0 |    1 |     1 |           NULL | PRETTY OK - Jon Skolmen    |
 		And I am logged in
 
-	@configuration @unreliable
+	@configuration
 	Scenario: Single host alert history
 		Given I visit the alert history page for host "linux-server1"
 		Then I should see "OK - Sven Melander"
 		And I should see "Reporting period: Forever"
 		And I shouldn't see "win-server"
-		When I click "Edit settings"
+
+	Scenario: See that host edit settings form content rendered correct
+		When I am on address "/index.php/alert_history/edit_settings?report_type=hosts&objects%5B0%5D=linux-server1"
 		Then "Show all" should be unchecked
 		And "objects" should have option "linux-server1"
 		When I uncheck "Up"
 		And I click "Update"
 		Then I shouldn't see "Sven Melander"
 
-	@configuration @bug-7083 @unreliable
+	@configuration @bug-7083
 	Scenario: Service with host alert history
 		Given I visit the alert history page for service "win-server1;Swap Usage"
 		Then I should see "ERROR - out of teletubbies"
@@ -57,7 +59,9 @@ Feature: Alert history reports
 		And I shouldn't see "linux"
 		And I shouldn't see "PING"
 		And I should see "Reporting period: Forever"
-		When I click "Edit settings"
+
+	Scenario: See that service edit settings form content rendered correct
+		When I am on address "/index.php/alert_history/edit_settings?report_type=services&objects%5B0%5D=win-server1%3BSwap%20Usage"
 		Then "Show all" should be unchecked
 		And "objects" should have option "win-server1;Swap Usage"
 		When I uncheck "Ok"
@@ -66,13 +70,15 @@ Feature: Alert history reports
 		Then I should see "ERROR - out of teletubbies"
 		And I shouldn't see "OK - laa-laa"
 
-	@configuration @unreliable
+	@configuration
 	Scenario: Host with service alert history
 		Given I visit the alert history page for host "win-server1"
 		Then I should see "OK - laa-laa"
 		And I should see "ERROR - tinky-winky"
 		And I should see "ERROR - out of teletubbies"
-		When I click "Edit settings"
+
+		Scenario: See that host with service edit settings form content rendered correct
+		When I am on address "/index.php/alert_history/edit_settings?report_type=hosts&objects%5B0%5D=win-server1"
 		And I uncheck "Ok"
 		And I uncheck "Warning"
 		And I uncheck "Critical"
@@ -82,11 +88,13 @@ Feature: Alert history reports
 		And I shouldn't see "ERROR - tinky-winky"
 		And I should see "OK - laa-laa"
 
-	@configuration @bug-7083 @unreliable
+	@configuration @bug-7083
 	Scenario: Switch object
 		Given I visit the alert history page for host "linux-server1"
 		Then I should see "OK - Sven Melander"
-		When I click "Edit settings"
+
+	Scenario: See that switch object edit settings form content rendered correct
+		When I am on address "/index.php/alert_history/edit_settings?report_type=hosts&objects%5B0%5D=linux-server1"
 		Then "objects_tmp" should have option "win-server1"
 		And "objects" should have option "linux-server1"
 		When I deselect "linux-server1" from the multiselect "objects"
@@ -99,26 +107,31 @@ Feature: Alert history reports
 		And I should see "OK - laa-laa"
 
 	# Henrik claims I broke this once, so let's prove him wrong forever
-	@configuration @unreliable
+	@configuration
 	Scenario: Change option from all objects
 		Given I am on the Host details page
 		And I hover over the "Report" menu
 		When I click "Alert history"
 		Then I should see "ERROR - out of teletubbies"
 		And I should see "OK - Sven Melander"
-		When I click "Edit settings"
+
+	Scenario: See that option from all object edit settings form content rendered correct
+		When I am on address "/index.php/alert_history/edit_settings"
 		And I uncheck "Up"
 		And I click "Update"
 		Then I should see "ERROR - out of teletubbies"
 		And I shouldn't see "OK - Sven Melander"
 
 	# MON-8189
-	@configuration @unreliable
+	@configuration
 	Scenario: Changes to start and end times are properly updated
 		Given I am on the Host details page
 		And I hover over the "Report" menu
 		Then I click "Alert history"
-		Then I click "Edit settings"
+		Then I should see "Alert history"
+
+	Scenario: See that changes to start and end times are properly updated on edit settings form
+		When I am on address "/index.php/alert_history/edit_settings"
 		And I select "Custom" from "Reporting period"
 		And I enter "2000-01-01" into "cal_start"
 		And I enter "2016-01-01" into "cal_end"
@@ -127,14 +140,16 @@ Feature: Alert history reports
 		And I click "Update"
 		Then I should see "2000-01-01 10:00:00 to 2016-01-01 10:00:00"
 
-	@configuration @bug-6341 @bug-6646 @unreliable
+	@configuration @bug-6341 @bug-6646
 	Scenario: Pagination
 		Given I visit the alert history page for host "win-server1"
 		Then I should see "OK - laa-laa"
 		And I should see "OK - po"
 		And I should see "ERROR - tinky-winky"
 		And I should see "ERROR - out of teletubbies"
-		When I click "Edit settings"
+
+	Scenario: See that pagination edit settings form content rendered correct
+		When I am on address "/index.php/alert_history/edit_settings?report_type=hosts&objects%5B0%5D=win-server1"
 		And I enter "1" into "Items to show"
 		And I check "Older entries first"
 		And I click "Update"

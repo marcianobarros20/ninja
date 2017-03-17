@@ -169,8 +169,8 @@ class Histogram_Controller extends Base_reports_Controller
 
 	public function edit_settings($input = false){
 		$this->setup_options_obj($input);
-		$this->template = $this->add_view('reports/edit_settings');
-		$template = $this->template;
+		$this->template->content = $this->add_view('reports/edit_settings');
+		$template = $this->template->content;
 		$template->report_options = $this->add_view('histogram/options');
 	}
 
